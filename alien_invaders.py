@@ -14,11 +14,12 @@ def video_init():
 
 def main_loop():
     screen = video_init()
+    spaceship = Spaceship(screen)
 
     while True:
         check_events()
 
-        blit_spaceship(screen)
+        spaceship.blit_spaceship()
         pygame.display.flip()
         screen.fill(color=s.SCREEN_COLOR)
 
@@ -29,18 +30,17 @@ def check_events():
             sys.exit()
 
 
-def load_spaceship():
-    image = pygame.image.load('images/spaceship.bmp')
-    spaceship = image.get_rect()
-    return image, spaceship
+class Spaceship:
+    def __init__(self, screen):
+        self.screen = screen
+        self.image = pygame.image.load('images/spaceship.bmp')
+        self.spaceship = self.image.get_rect()
+        screen_rect = self.screen.get_rect()
+        self.spaceship.midbottom = screen_rect.midbottom
 
+    def blit_spaceship(self):
+        self.screen.blit(self.image, self.spaceship)
 
-def blit_spaceship(screen):
-    image, spaceship = load_spaceship()
-    screen_rect = screen.get_rect()
-    spaceship.midbottom = screen_rect.midbottom
-    screen.blit(image, spaceship)
-    
 
 if __name__ == '__main__':
     main_loop()
