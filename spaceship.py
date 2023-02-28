@@ -26,3 +26,7 @@ class Spaceship:
     def load_image_of_spaceship():
         image = pygame.image.load('images/x-wing.png')
         return image
+
+
+if __name__ == '__main__':
+    pass
