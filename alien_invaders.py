@@ -18,8 +18,8 @@ def main_loop():
 
     while True:
         check_events()
+        check_key_pressed_events(spaceship)
 
-        spaceship.move()
         screen.blit(spaceship.image, spaceship.spaceship_rect)
         pygame.display.update()
         screen.fill(color=s.SCREEN_COLOR)
@@ -31,26 +31,38 @@ def check_events():
             sys.exit()
 
 
-def load_image_of_spaceship():
-    image = pygame.image.load('images/spaceship.bmp')
-    return image
+def check_key_pressed_events(spaceship):
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT]:
+        spaceship.move(left=True)
+    if keys[pygame.K_RIGHT]:
+        spaceship.move(right=True)
 
 
 class Spaceship:
 
     def __init__(self, screen):
-        self.image = load_image_of_spaceship()
+        self.image = self.load_image_of_spaceship()
         self.spaceship_rect = self.image.get_rect()
         self.screen = screen
         self.screen_rect = screen.get_rect()
         self.speed = s.SPACESHIP_SPEED
 
         self.spaceship_rect.midbottom = self.screen_rect.midbottom
+        self.spaceship_x_float = float(self.spaceship_rect.x)
 
-    def move(self):
-        self.spaceship_rect = self.spaceship_rect.move(self.speed, 0)
-        if self.spaceship_rect.right > self.screen_rect.right:
-            self.spaceship_rect.left = 0
+    def move(self, right=False, left=False):
+        if right and self.spaceship_rect.right < self.screen_rect.right:
+            self.spaceship_x_float += self.speed
+            self.spaceship_rect.x = self.spaceship_x_float
+        if left and self.spaceship_rect.left > 0:
+            self.spaceship_x_float -= self.speed
+            self.spaceship_rect.x = self.spaceship_x_float
+
+    @staticmethod
+    def load_image_of_spaceship():
+        image = pygame.image.load('images/spaceship.bmp')
+        return image
 
 
 if __name__ == '__main__':
