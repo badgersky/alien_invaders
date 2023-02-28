@@ -38,6 +38,8 @@ def check_key_pressed_events(spaceship):
         spaceship.move(left=True)
     if keys[pygame.K_RIGHT]:
         spaceship.move(right=True)
+    if keys[pygame.K_ESCAPE]:
+        sys.exit()
 
 
 if __name__ == '__main__':
