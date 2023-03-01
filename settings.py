@@ -13,3 +13,12 @@ STAR_SIZE = {
 }
 
 STAR_COLOR = (255, 255, 255)
+
+BULLET_SIZE = {
+    'width': 2,
+    'height': 5,
+}
+
+BULLET_COLOR = (255, 0, 0)
+
+BULLET_SPEED = 3
