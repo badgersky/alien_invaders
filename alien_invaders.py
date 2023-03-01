@@ -26,6 +26,22 @@ def main_loop():
         screen_update(screen, spaceship)
 
 
+def check_events():
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            sys.exit()
+
+
+def check_key_pressed_events(spaceship):
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT]:
+        spaceship.move(left=True)
+    if keys[pygame.K_RIGHT]:
+        spaceship.move(right=True)
+    if keys[pygame.K_ESCAPE]:
+        sys.exit()
+
+
 def screen_update(screen, spaceship):
     screen.blit(spaceship.image, spaceship.spaceship_rect)
     pygame.display.update()
@@ -43,22 +59,6 @@ def create_stars(screen):
         star = Star(screen)
         stars.add(star)
     return stars
-
-
-def check_events():
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            sys.exit()
-
-
-def check_key_pressed_events(spaceship):
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT]:
-        spaceship.move(left=True)
-    if keys[pygame.K_RIGHT]:
-        spaceship.move(right=True)
-    if keys[pygame.K_ESCAPE]:
-        sys.exit()
 
 
 if __name__ == '__main__':
