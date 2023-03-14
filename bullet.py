@@ -14,10 +14,10 @@ class Bullet(pygame.sprite.Sprite):
 
         self.speed = s.BULLET_SPEED
 
-    def draw_bullets(self):
+    def draw(self):
         pygame.draw.rect(self.screen, s.BULLET_COLOR, self.rect)
 
-    def move(self):
+    def update(self):
         self.rect.y -= self.speed
 
 

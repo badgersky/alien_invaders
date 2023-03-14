@@ -1,6 +1,7 @@
 import pygame
 import sys
 import settings as s
+from bullet import Bullet
 from spaceship import Spaceship
 from star import Star
 
@@ -18,11 +19,14 @@ def main_loop():
     screen = video_init()
     spaceship = Spaceship(screen)
     stars = create_stars(screen)
+    bullets = pygame.sprite.Group()
 
     while True:
         check_events()
-        check_key_pressed_events(spaceship)
+        check_key_pressed_events(spaceship, bullets, screen)
         draw_stars(stars)
+        bullets.update()
+        draw_bullets(bullets)
         screen_update(screen, spaceship)
 
 
@@ -32,7 +36,7 @@ def check_events():
             sys.exit()
 
 
-def check_key_pressed_events(spaceship):
+def check_key_pressed_events(spaceship, bullets, screen):
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]:
         spaceship.move(left=True)
@@ -40,12 +44,20 @@ def check_key_pressed_events(spaceship):
         spaceship.move(right=True)
     if keys[pygame.K_ESCAPE]:
         sys.exit()
+    if keys[pygame.K_SPACE]:
+        new_bullet = Bullet(screen, spaceship)
+        bullets.add(new_bullet)
 
 
 def screen_update(screen, spaceship):
     screen.blit(spaceship.image, spaceship.spaceship_rect)
     pygame.display.update()
     screen.fill(color=s.SCREEN_COLOR)
+
+
+def draw_bullets(bullets):
+    for bullet in bullets:
+        bullet.draw()
 
 
 def draw_stars(stars):
