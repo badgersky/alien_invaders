@@ -34,5 +34,22 @@ class XWing:
         return image
 
 
+class TieFighter(pygame.sprite.Sprite):
+
+    def __init__(self, screen):
+        super().__init__()
+        self.image = self.load_image_of_spaceship()
+        self.spaceship_rect = self.image.get_rect()
+        self.screen = screen
+
+    def update(self):
+        self.screen.blit(self.image, self.spaceship_rect)
+
+    @staticmethod
+    def load_image_of_spaceship():
+        image = pygame.image.load('images/tie_fighter.bmp')
+        return image
+
+
 if __name__ == '__main__':
     pass
