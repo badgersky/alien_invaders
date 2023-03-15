@@ -36,11 +36,14 @@ class XWing:
 
 class TieFighter(pygame.sprite.Sprite):
 
-    def __init__(self, screen):
+    def __init__(self, screen, x, y):
         super().__init__()
         self.image = self.load_image_of_spaceship()
         self.spaceship_rect = self.image.get_rect()
         self.screen = screen
+
+        self.spaceship_rect.x = x
+        self.spaceship_rect.y = y
 
     def update(self):
         self.screen.blit(self.image, self.spaceship_rect)

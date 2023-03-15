@@ -2,7 +2,7 @@ import pygame
 import sys
 import settings as s
 from bullet import Bullet
-from spaceship import XWing
+from spaceship import XWing, TieFighter
 from star import Star
 
 
@@ -20,13 +20,14 @@ def main_loop():
     x_wing = XWing(screen)
     stars = create_stars(screen)
     bullets = pygame.sprite.Group()
+    tie_fighters = pygame.sprite.Group()
+    create_tie_fighters(screen, tie_fighters)
 
     while True:
         check_events(x_wing, bullets, screen)
-        x_wing.move()
         draw_bullets(bullets)
         draw_stars(stars)
-        screen_update(screen, x_wing, bullets)
+        screen_update(screen, x_wing, bullets, tie_fighters)
 
 
 def check_events(x_wing, bullets, screen):
@@ -59,9 +60,11 @@ def check_keyup_events(x_wing, event):
         x_wing.moving_right = False
 
 
-def screen_update(screen, x_wing, bullets):
+def screen_update(screen, x_wing, bullets, tie_fighters):
+    x_wing.move()
     x_wing.update()
     bullets.update()
+    tie_fighters.update()
     pygame.display.update()
     screen.fill(color=s.SCREEN_COLOR)
 
@@ -85,6 +88,14 @@ def create_stars(screen):
         star = Star(screen)
         stars.add(star)
     return stars
+
+
+def create_tie_fighters(screen, tie_fighters):
+    prototype = TieFighter(screen, 0, 0)
+    for y in range(40, s.SCREEN_SIZE['height'] // 2, int(prototype.spaceship_rect.height * 1.6)):
+        for x in range(60, s.SCREEN_SIZE['width'] - 60, int(prototype.spaceship_rect.width * 1.6)):
+            tie_fighter = TieFighter(screen, x, y)
+            tie_fighters.add(tie_fighter)
 
 
 if __name__ == '__main__':
