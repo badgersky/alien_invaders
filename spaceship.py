@@ -14,13 +14,19 @@ class Spaceship:
         self.spaceship_rect.midbottom = self.screen_rect.midbottom
         self.spaceship_x_float = float(self.spaceship_rect.x)
 
-    def move(self, right=False, left=False):
-        if right and self.spaceship_rect.right < self.screen_rect.right:
+        self.moving_right = False
+        self.moving_left = False
+
+    def move(self):
+        if self.moving_right and self.spaceship_rect.right < self.screen_rect.right:
             self.spaceship_x_float += self.speed
             self.spaceship_rect.x = self.spaceship_x_float
-        if left and self.spaceship_rect.left > 0:
+        if self.moving_left and self.spaceship_rect.left > 0:
             self.spaceship_x_float -= self.speed
             self.spaceship_rect.x = self.spaceship_x_float
+
+    def update(self):
+        self.screen.blit(self.image, self.spaceship_rect)
 
     @staticmethod
     def load_image_of_spaceship():
