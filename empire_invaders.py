@@ -11,7 +11,7 @@ def video_init():
     width = s.SCREEN_SIZE['width']
     height = s.SCREEN_SIZE['height']
     screen = pygame.display.set_mode((width, height))
-    pygame.display.set_caption('Alien Invaders')
+    pygame.display.set_caption('Empire Invaders')
     return screen
 
 

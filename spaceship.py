@@ -44,8 +44,33 @@ class TieFighter(pygame.sprite.Sprite):
 
         self.rect.x = x
         self.rect.y = y
+        self.float_x = float(self.rect.x)
+
+        self.limit_left = self.rect.x - 30
+        self.limit_right = self.rect.x + 30
+
+        self.moving_right = True
+        self.moving_left = False
+
+    def move(self):
+        self.change_move_direction()
+        if self.moving_right:
+            self.float_x += 0.25
+            self.rect.x = self.float_x
+        if self.moving_left:
+            self.float_x -= 0.25
+            self.rect.x = self.float_x
+
+    def change_move_direction(self):
+        if self.rect.x == self.limit_right:
+            self.moving_right = False
+            self.moving_left = True
+        if self.rect.x == self.limit_left:
+            self.moving_right = True
+            self.moving_left = False
 
     def update(self):
+        self.move()
         self.screen.blit(self.image, self.rect)
 
     @staticmethod
