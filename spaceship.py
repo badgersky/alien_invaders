@@ -30,7 +30,7 @@ class Spaceship:
 
     @staticmethod
     def load_image_of_spaceship():
-        image = pygame.image.load('images/x-wing.png')
+        image = pygame.image.load('images/x-wing.bmp')
         return image
 
 
