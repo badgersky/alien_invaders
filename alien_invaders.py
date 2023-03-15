@@ -25,10 +25,8 @@ def main_loop():
 
     while True:
         check_events(x_wing, bullets, screen)
-        draw_bullets(bullets)
         check_hit_tie_fighters(bullets, tie_fighters)
-        draw_stars(stars)
-        screen_update(screen, x_wing, bullets, tie_fighters)
+        screen_update(screen, x_wing, bullets, tie_fighters, stars)
 
 
 def check_events(x_wing, bullets, screen):
@@ -61,11 +59,13 @@ def check_keyup_events(x_wing, event):
         x_wing.moving_right = False
 
 
-def screen_update(screen, x_wing, bullets, tie_fighters):
+def screen_update(screen, x_wing, bullets, tie_fighters, stars):
     x_wing.move()
     x_wing.update()
     bullets.update()
     tie_fighters.update()
+    draw_bullets(bullets)
+    stars.update()
     pygame.display.update()
     screen.fill(color=s.SCREEN_COLOR)
 
@@ -78,11 +78,6 @@ def draw_bullets(bullets):
             bullet.draw()
 
 
-def draw_stars(stars):
-    for star in stars:
-        star.draw_star()
-
-
 def create_stars(screen):
     stars = pygame.sprite.Group()
     for _ in range(1000):
@@ -93,8 +88,8 @@ def create_stars(screen):
 
 def create_tie_fighters(screen, tie_fighters):
     prototype = TieFighter(screen, 0, 0)
-    for y in range(40, s.SCREEN_SIZE['height'] // 2, int(prototype.rect.height * 1.9)):
-        for x in range(60, s.SCREEN_SIZE['width'] - 60, int(prototype.rect.width * 1.9)):
+    for y in range(40, s.SCREEN_SIZE['height'] // 2, int(prototype.rect.height * 1.5)):
+        for x in range(60, s.SCREEN_SIZE['width'] - 60, int(prototype.rect.width * 2.1)):
             tie_fighter = TieFighter(screen, x, y)
             tie_fighters.add(tie_fighter)
 

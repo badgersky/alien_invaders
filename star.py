@@ -18,7 +18,7 @@ class Star(pygame.sprite.Sprite):
         position_y = randint(0, screen_height)
         self.rect = pygame.Rect((position_x, position_y), (width, height))
 
-    def draw_star(self):
+    def update(self):
         pygame.draw.rect(self.screen, self.color, self.rect)
 
 
