@@ -26,6 +26,7 @@ def main_loop():
     while True:
         check_events(x_wing, bullets, screen)
         draw_bullets(bullets)
+        check_hit_tie_fighters(bullets, tie_fighters)
         draw_stars(stars)
         screen_update(screen, x_wing, bullets, tie_fighters)
 
@@ -92,10 +93,19 @@ def create_stars(screen):
 
 def create_tie_fighters(screen, tie_fighters):
     prototype = TieFighter(screen, 0, 0)
-    for y in range(40, s.SCREEN_SIZE['height'] // 2, int(prototype.spaceship_rect.height * 1.9)):
-        for x in range(60, s.SCREEN_SIZE['width'] - 60, int(prototype.spaceship_rect.width * 1.9)):
+    for y in range(40, s.SCREEN_SIZE['height'] // 2, int(prototype.rect.height * 1.9)):
+        for x in range(60, s.SCREEN_SIZE['width'] - 60, int(prototype.rect.width * 1.9)):
             tie_fighter = TieFighter(screen, x, y)
             tie_fighters.add(tie_fighter)
+
+
+def check_hit_tie_fighters(bullets, tie_fighters):
+    for tie_fighter in tie_fighters:
+        for bullet in bullets:
+            if tie_fighter.rect.y <= bullet.rect.y <= tie_fighter.rect.y + tie_fighter.rect.height:
+                if tie_fighter.rect.x <= bullet.rect.x <= tie_fighter.rect.x + tie_fighter.rect.width:
+                    tie_fighters.remove(tie_fighter)
+                    bullets.remove(bullet)
 
 
 if __name__ == '__main__':

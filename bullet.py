@@ -7,7 +7,7 @@ class Bullet(pygame.sprite.Sprite):
     def __init__(self, screen, spaceship):
         super().__init__()
         self.screen = screen
-        self.spaceship_rect = spaceship.spaceship_rect
+        self.spaceship_rect = spaceship.rect
 
         position = self.spaceship_rect.midtop
         self.rect = pygame.Rect(position, (s.BULLET_SIZE['width'], s.BULLET_SIZE['height']))
