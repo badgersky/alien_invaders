@@ -2,7 +2,7 @@ import pygame
 import sys
 import settings as s
 from bullet import Bullet
-from spaceship import Spaceship
+from spaceship import XWing
 from star import Star
 
 
@@ -17,50 +17,50 @@ def video_init():
 
 def main_loop():
     screen = video_init()
-    spaceship = Spaceship(screen)
+    x_wing = XWing(screen)
     stars = create_stars(screen)
     bullets = pygame.sprite.Group()
 
     while True:
-        check_events(spaceship, bullets, screen)
-        spaceship.move()
+        check_events(x_wing, bullets, screen)
+        x_wing.move()
         draw_bullets(bullets)
         draw_stars(stars)
-        screen_update(screen, spaceship, bullets)
+        screen_update(screen, x_wing, bullets)
 
 
-def check_events(spaceship, bullets, screen):
+def check_events(x_wing, bullets, screen):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
         if event.type == pygame.KEYDOWN:
-            check_keydown_events(spaceship, bullets, screen, event)
+            check_keydown_events(x_wing, bullets, screen, event)
         if event.type == pygame.KEYUP:
-            check_keyup_events(spaceship, event)
+            check_keyup_events(x_wing, event)
 
 
-def check_keydown_events(spaceship, bullets, screen, event):
+def check_keydown_events(x_wing, bullets, screen, event):
     if event.key == pygame.K_ESCAPE:
         sys.exit()
     if event.key == pygame.K_SPACE:
         if len(bullets) < 5:
-            new_bullet = Bullet(screen, spaceship)
+            new_bullet = Bullet(screen, x_wing)
             bullets.add(new_bullet)
     if event.key == pygame.K_LEFT:
-        spaceship.moving_left = True
+        x_wing.moving_left = True
     if event.key == pygame.K_RIGHT:
-        spaceship.moving_right = True
+        x_wing.moving_right = True
 
 
-def check_keyup_events(spaceship, event):
+def check_keyup_events(x_wing, event):
     if event.key == pygame.K_LEFT:
-        spaceship.moving_left = False
+        x_wing.moving_left = False
     if event.key == pygame.K_RIGHT:
-        spaceship.moving_right = False
+        x_wing.moving_right = False
 
 
-def screen_update(screen, spaceship, bullets):
-    spaceship.update()
+def screen_update(screen, x_wing, bullets):
+    x_wing.update()
     bullets.update()
     pygame.display.update()
     screen.fill(color=s.SCREEN_COLOR)

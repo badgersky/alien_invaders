@@ -2,7 +2,7 @@ import pygame
 import settings as s
 
 
-class Spaceship:
+class XWing:
 
     def __init__(self, screen):
         self.image = self.load_image_of_spaceship()
