@@ -92,8 +92,8 @@ def create_stars(screen):
 
 def create_tie_fighters(screen, tie_fighters):
     prototype = TieFighter(screen, 0, 0)
-    for y in range(40, s.SCREEN_SIZE['height'] // 2, int(prototype.spaceship_rect.height * 1.6)):
-        for x in range(60, s.SCREEN_SIZE['width'] - 60, int(prototype.spaceship_rect.width * 1.6)):
+    for y in range(40, s.SCREEN_SIZE['height'] // 2, int(prototype.spaceship_rect.height * 1.9)):
+        for x in range(60, s.SCREEN_SIZE['width'] - 60, int(prototype.spaceship_rect.width * 1.9)):
             tie_fighter = TieFighter(screen, x, y)
             tie_fighters.add(tie_fighter)
 
