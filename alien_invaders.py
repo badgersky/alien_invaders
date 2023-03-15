@@ -23,7 +23,8 @@ def main_loop():
 
     while True:
         check_events(spaceship, bullets, screen)
-        check_keys_for_moving(spaceship)
+        spaceship.move()
+        draw_bullets(bullets)
         draw_stars(stars)
         screen_update(screen, spaceship, bullets)
 
@@ -33,30 +34,34 @@ def check_events(spaceship, bullets, screen):
         if event.type == pygame.QUIT:
             sys.exit()
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
-                sys.exit()
-            check_keys_for_shooting(spaceship, bullets, screen, event)
+            check_keydown_events(spaceship, bullets, screen, event)
+        if event.type == pygame.KEYUP:
+            check_keyup_events(spaceship, event)
 
 
-def check_keys_for_moving(spaceship):
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT]:
-        spaceship.move(left=True)
-    if keys[pygame.K_RIGHT]:
-        spaceship.move(right=True)
-
-
-def check_keys_for_shooting(spaceship, bullets, screen, event):
+def check_keydown_events(spaceship, bullets, screen, event):
+    if event.key == pygame.K_ESCAPE:
+        sys.exit()
     if event.key == pygame.K_SPACE:
         if len(bullets) < 5:
             new_bullet = Bullet(screen, spaceship)
             bullets.add(new_bullet)
+    if event.key == pygame.K_LEFT:
+        spaceship.moving_left = True
+    if event.key == pygame.K_RIGHT:
+        spaceship.moving_right = True
+
+
+def check_keyup_events(spaceship, event):
+    if event.key == pygame.K_LEFT:
+        spaceship.moving_left = False
+    if event.key == pygame.K_RIGHT:
+        spaceship.moving_right = False
 
 
 def screen_update(screen, spaceship, bullets):
-    screen.blit(spaceship.image, spaceship.spaceship_rect)
+    spaceship.update()
     bullets.update()
-    draw_bullets(bullets)
     pygame.display.update()
     screen.fill(color=s.SCREEN_COLOR)
 
