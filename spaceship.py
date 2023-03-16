@@ -23,7 +23,7 @@ class XWing(Spaceship):
         super().__init__(screen)
         self.image = self.load_image_of_spaceship('images/x-wing.bmp')
         self.rect = self.image.get_rect()
-        self.speed = s.SPACESHIP_SPEED
+        self.speed = s.X_WING_SPEED
         self.rect.midbottom = self.screen_rect.midbottom
         self.spaceship_x_float = float(self.rect.x)
 
@@ -55,14 +55,15 @@ class TieFighter(pygame.sprite.Sprite, Spaceship):
         self.limit_right = self.rect.x + 30
 
         self.moving_right = True
+        self.speed= s.TIE_FIGHTER_SPEED
 
     def move(self):
         self.change_move_direction()
         if self.moving_right:
-            self.float_x += 0.25
+            self.float_x += self.speed
             self.rect.x = self.float_x
         if self.moving_left:
-            self.float_x -= 0.25
+            self.float_x -= self.speed
             self.rect.x = self.float_x
 
     def change_move_direction(self):
@@ -74,6 +75,7 @@ class TieFighter(pygame.sprite.Sprite, Spaceship):
             self.moving_left = False
 
     def update(self):
+        self.move()
         self.screen.blit(self.image, self.rect)
 
 
