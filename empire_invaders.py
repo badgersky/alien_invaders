@@ -20,13 +20,15 @@ def main_loop():
     x_wing = XWing(screen)
     stars = create_stars(screen)
     bullets = pygame.sprite.Group()
+    enemy_bullets = pygame.sprite.Group()
     tie_fighters = pygame.sprite.Group()
     create_tie_fighters(screen, tie_fighters)
 
     while True:
+        create_enemy_bullets(screen, enemy_bullets)
         check_events(x_wing, bullets, screen)
         check_hit_tie_fighters(bullets, tie_fighters)
-        screen_update(screen, x_wing, bullets, tie_fighters, stars)
+        screen_update(screen, x_wing, bullets, tie_fighters, stars, enemy_bullets)
 
 
 def check_events(x_wing, bullets, screen):
@@ -59,12 +61,14 @@ def check_keyup_events(x_wing, event):
         x_wing.moving_right = False
 
 
-def screen_update(screen, x_wing, bullets, tie_fighters, stars):
+def screen_update(screen, x_wing, bullets, tie_fighters, stars, enemy_bullets):
     x_wing.move()
     x_wing.update()
     bullets.update()
+    enemy_bullets.update()
     tie_fighters.update()
     draw_bullets(bullets)
+    draw_enemy_bullets(enemy_bullets)
     stars.update()
     pygame.display.update()
     screen.fill(color=s.SCREEN_COLOR)
@@ -101,6 +105,21 @@ def check_hit_tie_fighters(bullets, tie_fighters):
                 if tie_fighter.rect.x <= bullet.rect.x <= tie_fighter.rect.x + tie_fighter.rect.width:
                     tie_fighters.remove(tie_fighter)
                     bullets.remove(bullet)
+
+
+def create_enemy_bullets(screen, enemy_bullets):
+    print(len(enemy_bullets))
+    if len(enemy_bullets) <= 5:
+        enemy_bullet = TieFighterBullet(screen)
+        enemy_bullets.add(enemy_bullet)
+
+
+def draw_enemy_bullets(enemy_bullets):
+    for bullet in enemy_bullets:
+        if bullet.rect.y > s.SCREEN_SIZE['height']:
+            enemy_bullets.remove(bullet)
+        else:
+            bullet.draw()
 
 
 if __name__ == '__main__':

@@ -55,7 +55,7 @@ class TieFighter(pygame.sprite.Sprite, Spaceship):
         self.limit_right = self.rect.x + 30
 
         self.moving_right = True
-        self.speed= s.TIE_FIGHTER_SPEED
+        self.speed = s.TIE_FIGHTER_SPEED
 
     def move(self):
         self.change_move_direction()

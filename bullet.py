@@ -6,11 +6,10 @@ import settings as s
 
 class Bullet(pygame.sprite.Sprite):
 
-    def __init__(self, screen, spaceship, color):
+    def __init__(self, screen, color):
         super().__init__()
         self.color = color
         self.screen = screen
-        self.spaceship_rect = spaceship.rect
 
         self.speed = s.BULLET_SPEED
 
@@ -18,7 +17,8 @@ class Bullet(pygame.sprite.Sprite):
 class XWingBullet(Bullet):
 
     def __init__(self, screen, spaceship):
-        super().__init__(screen, spaceship, s.BULLET_COLOR)
+        super().__init__(screen, s.BULLET_COLOR)
+        self.spaceship_rect = spaceship.rect
         position = self.spaceship_rect.midtop
         self.rect = pygame.Rect(position, (s.BULLET_SIZE['width'], s.BULLET_SIZE['height']))
 
@@ -30,8 +30,8 @@ class XWingBullet(Bullet):
 
 
 class TieFighterBullet(Bullet):
-    def __init__(self, screen, spaceship):
-        super().__init__(screen, spaceship, s.ENEMY_BULLET_COLOR)
+    def __init__(self, screen):
+        super().__init__(screen, s.ENEMY_BULLET_COLOR)
         position = (random.randint(0, s.SCREEN_SIZE['width']), 0)
         self.rect = pygame.Rect(position, (s.BULLET_SIZE['width'], s.BULLET_SIZE['height']))
 
