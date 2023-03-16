@@ -28,6 +28,7 @@ def main_loop():
         create_enemy_bullets(screen, enemy_bullets)
         check_events(x_wing, bullets, screen)
         check_hit_tie_fighters(bullets, tie_fighters)
+        check_hit_x_wing(enemy_bullets, x_wing)
         screen_update(screen, x_wing, bullets, tie_fighters, stars, enemy_bullets)
 
 
@@ -105,6 +106,13 @@ def check_hit_tie_fighters(bullets, tie_fighters):
                 if tie_fighter.rect.x <= bullet.rect.x <= tie_fighter.rect.x + tie_fighter.rect.width:
                     tie_fighters.remove(tie_fighter)
                     bullets.remove(bullet)
+
+
+def check_hit_x_wing(enemy_bullets, x_wing):
+    for bullet in enemy_bullets:
+        if x_wing.rect.y <= bullet.rect.y <= x_wing.rect.y + x_wing.rect.height:
+            if x_wing.rect.x <= bullet.rect.x <= x_wing.rect.x + x_wing.rect.width:
+                sys.exit()
 
 
 def create_enemy_bullets(screen, enemy_bullets):

@@ -2,9 +2,10 @@ import pygame
 import settings as s
 
 
-class Spaceship:
+class Spaceship(pygame.sprite.Sprite):
 
     def __init__(self, screen):
+        super().__init__()
         self.screen = screen
         self.screen_rect = self.screen.get_rect()
 
@@ -39,11 +40,10 @@ class XWing(Spaceship):
         self.screen.blit(self.image, self.rect)
 
 
-class TieFighter(pygame.sprite.Sprite, Spaceship):
+class TieFighter(Spaceship):
 
     def __init__(self, screen, x, y):
-        Spaceship.__init__(self, screen)
-        super().__init__()
+        super().__init__(screen)
         self.image = self.load_image_of_spaceship('images/tie_fighter.bmp')
         self.rect = self.image.get_rect()
 
