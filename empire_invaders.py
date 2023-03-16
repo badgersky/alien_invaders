@@ -1,7 +1,7 @@
 import pygame
 import sys
 import settings as s
-from bullet import Bullet
+from bullet import XWingBullet, TieFighterBullet
 from spaceship import XWing, TieFighter
 from star import Star
 
@@ -44,7 +44,7 @@ def check_keydown_events(x_wing, bullets, screen, event):
         sys.exit()
     if event.key == pygame.K_SPACE:
         if len(bullets) < 5:
-            new_bullet = Bullet(screen, x_wing)
+            new_bullet = XWingBullet(screen, x_wing)
             bullets.add(new_bullet)
     if event.key == pygame.K_LEFT:
         x_wing.moving_left = True
