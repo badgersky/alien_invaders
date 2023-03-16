@@ -25,6 +25,7 @@ def main_loop():
     create_tie_fighters(screen, tie_fighters)
 
     while True:
+        check_win(tie_fighters)
         create_enemy_bullets(screen, enemy_bullets)
         check_events(x_wing, bullets, screen)
         check_hit_tie_fighters(bullets, tie_fighters)
@@ -116,7 +117,6 @@ def check_hit_x_wing(enemy_bullets, x_wing):
 
 
 def create_enemy_bullets(screen, enemy_bullets):
-    print(len(enemy_bullets))
     if len(enemy_bullets) <= 5:
         enemy_bullet = TieFighterBullet(screen)
         enemy_bullets.add(enemy_bullet)
@@ -128,6 +128,11 @@ def draw_enemy_bullets(enemy_bullets):
             enemy_bullets.remove(bullet)
         else:
             bullet.draw()
+
+
+def check_win(tie_fighters):
+    if len(tie_fighters) == 0:
+        sys.exit()
 
 
 if __name__ == '__main__':
