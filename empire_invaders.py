@@ -63,10 +63,10 @@ class EmpireInvaders:
 
     def update_screen(self):
         self.spaceship.update()
-        self.tie_fighters.update()
         self.bullets.update()
         self.enemy_bullets.update()
         self.draw_bullets()
+        self.tie_fighters.update()
         p.display.flip()
         self.screen.fill(color=s.SCREEN_COLOR)
 
