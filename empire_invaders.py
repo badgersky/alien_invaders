@@ -8,10 +8,10 @@ from star import Star
 
 def video_init():
     pygame.init()
-    width = s.SCREEN_SIZE['width']
-    height = s.SCREEN_SIZE['height']
-    screen = pygame.display.set_mode((width, height))
+    screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
     pygame.display.set_caption('Empire Invaders')
+    s.SCREEN_SIZE['width'] = screen.get_width()
+    s.SCREEN_SIZE['height'] = screen.get_height()
     return screen
 
 

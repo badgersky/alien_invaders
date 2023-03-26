@@ -1,6 +1,6 @@
 SCREEN_SIZE = {
-    'width': 1920,
-    'height': 1000,
+    'width': 1080,
+    'height': 720,
 }
 
 SCREEN_COLOR = (0, 0, 0)
