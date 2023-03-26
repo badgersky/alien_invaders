@@ -37,6 +37,7 @@ class XWing(Spaceship):
             self.rect.x = self.spaceship_x_float
 
     def update(self):
+        self.move()
         self.screen.blit(self.image, self.rect)
 
 

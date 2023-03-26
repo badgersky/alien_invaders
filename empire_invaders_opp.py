@@ -62,7 +62,6 @@ class EmpireInvaders:
             self.spaceship.moving_right = True
 
     def update_screen(self):
-        self.spaceship.move()
         self.spaceship.update()
         self.tie_fighters.update()
         self.bullets.update()
