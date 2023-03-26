@@ -91,15 +91,15 @@ class EmpireInvaders:
             else:
                 bullet.draw()
         for bullet in self.enemy_bullets:
-            if bullet.rect.y > s.SCREEN_SIZE['height']:
+            if bullet.rect.y > self.screen_height:
                 self.enemy_bullets.remove(bullet)
             else:
                 bullet.draw()
 
     def create_tie_fighters(self):
         prototype = TieFighter(self.screen, 0, 0)
-        for y in range(40, s.SCREEN_SIZE['height'] // 2, int(prototype.rect.height * 1.5)):
-            for x in range(60, s.SCREEN_SIZE['width'] - 60, int(prototype.rect.width * 2.1)):
+        for y in range(40, self.screen_height // 2, int(prototype.rect.height * 1.5)):
+            for x in range(60, self.screen_width - 60, int(prototype.rect.width * 2.1)):
                 tie_fighter = TieFighter(self.screen, x, y)
                 self.tie_fighters.add(tie_fighter)
 
