@@ -14,19 +14,40 @@ class EmpireInvaders:
         self.screen = p.display.set_mode((0, 0), p.FULLSCREEN)
         self.screen_width = self.screen.get_width()
         self.screen_height = self.screen.get_height()
+        s.SCREEN_SIZE['width'], s.SCREEN_SIZE['height'] = self.screen_width, self.screen_height
         p.display.set_caption('Empire Invaders')
 
-    def main_loop(self):
-        while True:
-            for event in p.event.get():
-                if event.type == p.QUIT:
-                    sys.exit()
-                if event.type == p.KEYDOWN:
-                    if event.key == p.K_ESCAPE:
-                        sys.exit()
+        self.spaceship = XWing(self.screen)
+        self.tie_fighters = p.sprite.Group()
 
-            self.screen.fill(color=s.SCREEN_COLOR)
-            p.display.flip()
+        self.stars = p.sprite.Group()
+
+        self.bullets = p.sprite.Group()
+        self.enemy_bullets = p.sprite.Group()
+
+    def main_loop(self):
+        self.create_stars()
+        while True:
+            self.check_events()
+            self.update_screen()
+
+    def check_events(self):
+        for event in p.event.get():
+            if event.type == p.QUIT:
+                sys.exit()
+            if event.type == p.KEYDOWN:
+                if event.key == p.K_ESCAPE:
+                    sys.exit()
+
+    def update_screen(self):
+        self.spaceship.update()
+        self.stars.update()
+        p.display.flip()
+
+    def create_stars(self):
+        for _ in range(1000):
+            star = Star(self.screen)
+            self.stars.add(star)
 
 
 if __name__ == '__main__':
