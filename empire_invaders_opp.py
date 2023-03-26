@@ -27,6 +27,7 @@ class EmpireInvaders:
 
     def main_loop(self):
         self.create_stars()
+        self.create_tie_fighters()
         while True:
             self.check_events()
             self.update_screen()
@@ -60,6 +61,7 @@ class EmpireInvaders:
         self.stars.update()
         self.spaceship.move()
         self.spaceship.update()
+        self.tie_fighters.update()
         self.bullets.update()
         self.draw_bullets()
         p.display.flip()
@@ -81,6 +83,13 @@ class EmpireInvaders:
                 self.bullets.remove(bullet)
             else:
                 bullet.draw()
+
+    def create_tie_fighters(self):
+        prototype = TieFighter(self.screen, 0, 0)
+        for y in range(40, s.SCREEN_SIZE['height'] // 2, int(prototype.rect.height * 1.5)):
+            for x in range(60, s.SCREEN_SIZE['width'] - 60, int(prototype.rect.width * 2.1)):
+                tie_fighter = TieFighter(self.screen, x, y)
+                self.tie_fighters.add(tie_fighter)
 
 
 if __name__ == '__main__':
