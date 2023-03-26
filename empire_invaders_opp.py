@@ -36,18 +36,51 @@ class EmpireInvaders:
             if event.type == p.QUIT:
                 sys.exit()
             if event.type == p.KEYDOWN:
-                if event.key == p.K_ESCAPE:
-                    sys.exit()
+                self.check_keydown_events(event)
+            if event.type == p.KEYUP:
+                self.check_keyup_events(event)
+
+    def check_keyup_events(self, event):
+        if event.key == p.K_LEFT:
+            self.spaceship.moving_left = False
+        if event.key == p.K_RIGHT:
+            self.spaceship.moving_right = False
+
+    def check_keydown_events(self, event):
+        if event.key == p.K_ESCAPE:
+            sys.exit()
+        if event.key == p.K_SPACE:
+            self.create_bullets()
+        if event.key == p.K_LEFT:
+            self.spaceship.moving_left = True
+        if event.key == p.K_RIGHT:
+            self.spaceship.moving_right = True
 
     def update_screen(self):
-        self.spaceship.update()
         self.stars.update()
+        self.spaceship.move()
+        self.spaceship.update()
+        self.bullets.update()
+        self.draw_bullets()
         p.display.flip()
+        self.screen.fill(color=s.SCREEN_COLOR)
 
     def create_stars(self):
         for _ in range(1000):
             star = Star(self.screen)
             self.stars.add(star)
+
+    def create_bullets(self):
+        if len(self.bullets) < 5:
+            new_bullet = XWingBullet(self.screen, self.spaceship)
+            self.bullets.add(new_bullet)
+
+    def draw_bullets(self):
+        for bullet in self.bullets:
+            if bullet.rect.y < 0:
+                self.bullets.remove(bullet)
+            else:
+                bullet.draw()
 
 
 if __name__ == '__main__':
