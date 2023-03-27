@@ -17,7 +17,9 @@ class MainMenu:
 
         title_img = p.image.load('images/title.bmp')
         play_button_img = p.image.load('images/play_button.bmp')
+        quit_button_img = p.image.load('images/quit_button.bmp')
 
+        self.quit_button = Text(self.screen, quit_button_img, self.width // 2, self.height // 1.3)
         self.play_button = Text(self.screen, play_button_img, self.width // 2, self.height // 1.7)
         self.title = Text(self.screen, title_img, self.width // 2, self.height // 4)
 
@@ -27,6 +29,7 @@ class MainMenu:
             self.check_events()
             self.screen.fill(color=s.SCREEN_COLOR)
             self.stars.update()
+            self.quit_button.blit_text()
             self.play_button.blit_text()
             self.title.blit_text()
             p.display.flip()
@@ -35,9 +38,13 @@ class MainMenu:
         for event in p.event.get():
             if event.type == p.QUIT:
                 sys.exit()
-            if event.type == p.KEYDOWN:
-                if event.key == p.K_ESCAPE:
+            if event.type == p.MOUSEBUTTONDOWN:
+                mouse_pos = p.mouse.get_pos()
+                if self.quit_button.rect.collidepoint(mouse_pos):
                     sys.exit()
+                if self.play_button.rect.collidepoint(mouse_pos):
+                    game = EmpireInvaders()
+                    game.main_loop()
 
     def create_stars(self):
         for _ in range(500):
@@ -54,11 +61,11 @@ class Text:
         self.image = image
         self.screen = screen
 
-        self.image_rect = self.image.get_rect()
-        self.image_rect.center = (x, y)
+        self.rect = self.image.get_rect()
+        self.rect.center = (x, y)
 
     def blit_text(self):
-        self.screen.blit(self.image, self.image_rect)
+        self.screen.blit(self.image, self.rect)
 
 
 if __name__ == '__main__':
