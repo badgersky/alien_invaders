@@ -51,9 +51,6 @@ class MainMenu:
             new_star = Star(self.screen)
             self.stars.add(new_star)
 
-    def button_play_pressed(self):
-        return True
-
 
 class Text:
 
