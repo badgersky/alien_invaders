@@ -106,16 +106,14 @@ class EmpireInvaders:
     def check_hit_tie_fighters(self):
         for tie_fighter in self.tie_fighters:
             for bullet in self.bullets:
-                if tie_fighter.rect.y <= bullet.rect.y <= tie_fighter.rect.y + tie_fighter.rect.height:
-                    if tie_fighter.rect.x <= bullet.rect.x <= tie_fighter.rect.x + tie_fighter.rect.width:
-                        self.tie_fighters.remove(tie_fighter)
-                        self.bullets.remove(bullet)
+                if tie_fighter.rect.collidepoint(bullet.rect.x, bullet.rect.y):
+                    self.bullets.remove(bullet)
+                    self.tie_fighters.remove(tie_fighter)
 
     def check_hit_x_wing(self):
         for bullet in self.enemy_bullets:
-            if self.spaceship.rect.y <= bullet.rect.y <= self.spaceship.rect.y + self.spaceship.rect.height:
-                if self.spaceship.rect.x <= bullet.rect.x <= self.spaceship.rect.x + self.spaceship.rect.width:
-                    sys.exit()
+            if self.spaceship.rect.collidepoint(bullet.rect.x, bullet.rect.y):
+                sys.exit()
 
     def check_win(self):
         if len(self.tie_fighters) == 0:
