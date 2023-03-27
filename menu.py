@@ -3,6 +3,7 @@ import pygame as p
 import settings as s
 from empire_invaders import EmpireInvaders
 from star import Star
+from text import Text
 
 
 class MainMenu:
@@ -50,19 +51,6 @@ class MainMenu:
         for _ in range(500):
             new_star = Star(self.screen)
             self.stars.add(new_star)
-
-
-class Text:
-
-    def __init__(self, screen, image, x, y):
-        self.image = image
-        self.screen = screen
-
-        self.rect = self.image.get_rect()
-        self.rect.center = (x, y)
-
-    def blit_text(self):
-        self.screen.blit(self.image, self.rect)
 
 
 if __name__ == '__main__':
