@@ -13,7 +13,7 @@ class MainMenu:
         self.screen = p.display.set_mode((1080, 720))
         self.width = self.screen.get_width()
         self.height = self.screen.get_height()
-        p.display.set_caption('Empire Menu')
+        p.display.set_caption('Empire Invaders')
         self.stars = p.sprite.Group()
 
         title_img = p.image.load('images/title.bmp')

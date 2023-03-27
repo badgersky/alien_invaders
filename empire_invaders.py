@@ -26,6 +26,7 @@ class EmpireInvaders:
         self.enemy_bullets = p.sprite.Group()
 
     def main_loop(self):
+        p.mouse.set_visible(False)
         self.create_stars()
         self.create_tie_fighters()
         while True:
