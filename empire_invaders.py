@@ -21,8 +21,6 @@ class EmpireInvaders:
 
         self.tie_fighters, self.bullets, self.enemy_bullets, self.stars = self.create_sprites()
 
-        self.running = False
-
         self.menu = MainMenu(self)
         self.menu.main_loop()
 
@@ -38,7 +36,7 @@ class EmpireInvaders:
         p.mouse.set_visible(False)
         self.create_stars()
         self.create_tie_fighters()
-        while self.running:
+        while True:
             self.check_win()
             self.check_lose()
             self.check_events()
@@ -123,7 +121,6 @@ class EmpireInvaders:
     def check_lose(self):
         for bullet in self.enemy_bullets:
             if self.spaceship.rect.collidepoint(bullet.rect.x, bullet.rect.y):
-                self.running = False
                 p.mouse.set_visible(True)
                 # resetting game properties
                 self.tie_fighters, self.bullets, self.enemy_bullets, self.stars = self.create_sprites()
@@ -133,7 +130,6 @@ class EmpireInvaders:
 
     def check_win(self):
         if len(self.tie_fighters) == 0:
-            self.running = False
             p.mouse.set_visible(True)
             # resetting game properties
             self.tie_fighters, self.bullets, self.enemy_bullets, self.stars = self.create_sprites()

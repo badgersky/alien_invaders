@@ -42,7 +42,6 @@ class Menu:
                 if self.quit_button.rect.collidepoint(mouse_pos):
                     sys.exit()
                 if self.play_button.rect.collidepoint(mouse_pos):
-                    self.game.running = True
                     self.game.main_loop()
 
     def create_stars(self):
