@@ -15,15 +15,16 @@ class Menu:
         p.display.set_caption('Empire Invaders')
         self.stars = p.sprite.Group()
 
-        play_button_img = p.image.load('images/play_button.bmp')
-        quit_button_img = p.image.load('images/quit_button.bmp')
+        self.play_button_img = p.image.load('images/play_button.bmp')
+        self.quit_button_img = p.image.load('images/quit_button.bmp')
 
         self.title = Text(self.screen, title_img, self.width // 2, self.height // 4)
-        self.quit_button = Text(self.screen, quit_button_img, self.width // 2, self.height // 1.3)
-        self.play_button = Text(self.screen, play_button_img, self.width // 2, self.height // 1.7)
+        self.quit_button = Text(self.screen, self.quit_button_img, self.width // 2, self.height // 1.3)
+        self.play_button = Text(self.screen, self.play_button_img, self.width // 2, self.height // 1.7)
 
     def main_loop(self):
-        self.create_stars()
+        if len(self.stars) == 0:
+            self.create_stars()
         while True:
             self.check_events()
             self.screen.fill(color=s.SCREEN_COLOR)
@@ -69,6 +70,15 @@ class WinMenu(Menu):
     def __init__(self, game):
         self.win_img = p.image.load('images/win_title.bmp')
         super().__init__(self.win_img, game)
+
+
+class PauseMenu(Menu):
+
+    def __init__(self, game):
+        self.title_img = p.image.load('images/title.bmp')
+        super().__init__(self.title_img, game)
+        self.play_button_img = p.image.load('images/resume_button.bmp')
+        self.play_button = Text(game.screen, self.play_button_img, self.width // 2, self.height // 1.7)
 
 
 if __name__ == '__main__':

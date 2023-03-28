@@ -2,7 +2,7 @@ import pygame as p
 import sys
 import settings as s
 from bullet import XWingBullet, TieFighterBullet
-from menu import MainMenu, LoseMenu, WinMenu
+from menu import MainMenu, LoseMenu, WinMenu, PauseMenu
 from spaceship import XWing, TieFighter
 from star import Star
 
@@ -21,6 +21,8 @@ class EmpireInvaders:
 
         self.tie_fighters, self.bullets, self.enemy_bullets, self.stars = self.create_sprites()
 
+        self.pause_menu = PauseMenu(self)
+
         self.menu = MainMenu(self)
         self.menu.main_loop()
 
@@ -34,8 +36,10 @@ class EmpireInvaders:
 
     def main_loop(self):
         p.mouse.set_visible(False)
-        self.create_stars()
-        self.create_tie_fighters()
+        if len(self.tie_fighters) == 0:
+            self.create_tie_fighters()
+        if len(self.stars) == 0:
+            self.create_stars()
         while True:
             self.check_win()
             self.check_lose()
@@ -61,7 +65,8 @@ class EmpireInvaders:
 
     def check_keydown_events(self, event):
         if event.key == p.K_ESCAPE:
-            sys.exit()
+            p.mouse.set_visible(True)
+            self.pause_menu.main_loop()
         if event.key == p.K_SPACE:
             self.create_bullets()
         if event.key == p.K_LEFT:
@@ -121,19 +126,21 @@ class EmpireInvaders:
     def check_lose(self):
         for bullet in self.enemy_bullets:
             if self.spaceship.rect.collidepoint(bullet.rect.x, bullet.rect.y):
-                p.mouse.set_visible(True)
                 # resetting game properties
                 self.tie_fighters, self.bullets, self.enemy_bullets, self.stars = self.create_sprites()
                 self.spaceship = XWing(self.screen)
+                p.time.wait(1000)
+                p.mouse.set_visible(True)
                 lose_screen = LoseMenu(self)
                 lose_screen.main_loop()
 
     def check_win(self):
         if len(self.tie_fighters) == 0:
-            p.mouse.set_visible(True)
             # resetting game properties
             self.tie_fighters, self.bullets, self.enemy_bullets, self.stars = self.create_sprites()
             self.spaceship = XWing(self.screen)
+            p.time.wait(1000)
+            p.mouse.set_visible(True)
             win_screen = WinMenu(self)
             win_screen.main_loop()
 
