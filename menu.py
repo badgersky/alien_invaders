@@ -78,6 +78,7 @@ class PauseMenu(Menu):
         self.title_img = p.image.load('images/title.bmp')
         super().__init__(self.title_img, game)
         self.play_button_img = p.image.load('images/resume_button.bmp')
+        self.play_button_img = p.transform.scale(self.play_button_img, (420, 140))
         self.play_button = Text(game.screen, self.play_button_img, self.width // 2, self.height // 1.7)
 
 
