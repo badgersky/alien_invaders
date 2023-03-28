@@ -2,6 +2,7 @@ import pygame as p
 import sys
 import settings as s
 from bullet import XWingBullet, TieFighterBullet
+from menu import Menu
 from spaceship import XWing, TieFighter
 from star import Star
 
@@ -10,7 +11,6 @@ class EmpireInvaders:
 
     def __init__(self):
         p.init()
-
         self.screen = p.display.set_mode((0, 0), p.FULLSCREEN)
         self.screen_width = self.screen.get_width()
         self.screen_height = self.screen.get_height()
@@ -24,6 +24,9 @@ class EmpireInvaders:
 
         self.bullets = p.sprite.Group()
         self.enemy_bullets = p.sprite.Group()
+
+        self.menu = Menu(self)
+        self.menu.main_loop()
 
     def main_loop(self):
         p.mouse.set_visible(False)
@@ -123,4 +126,3 @@ class EmpireInvaders:
 
 if __name__ == '__main__':
     empire_invaders = EmpireInvaders()
-    empire_invaders.main_loop()
