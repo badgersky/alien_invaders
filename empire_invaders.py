@@ -5,6 +5,8 @@ from bullet import XWingBullet, TieFighterBullet
 from menu import MainMenu, LoseMenu, WinMenu, PauseMenu
 from spaceship import XWing, TieFighter
 from star import Star
+from explosion import Explosion
+import time
 
 
 class EmpireInvaders:
@@ -19,7 +21,7 @@ class EmpireInvaders:
 
         self.spaceship = XWing(self.screen)
 
-        self.tie_fighters, self.bullets, self.enemy_bullets, self.stars = self.create_sprites()
+        self.tie_fighters, self.bullets, self.enemy_bullets, self.stars, self.explosions = self.create_sprites()
 
         self.pause_menu = PauseMenu(self)
 
@@ -32,7 +34,8 @@ class EmpireInvaders:
         bullets = p.sprite.Group()
         enemy_bullets = p.sprite.Group()
         stars = p.sprite.Group()
-        return tie_fighters, bullets, enemy_bullets, stars
+        explosions = p.sprite.Group()
+        return tie_fighters, bullets, enemy_bullets, stars, explosions
 
     def main_loop(self):
         p.mouse.set_visible(False)
@@ -80,6 +83,8 @@ class EmpireInvaders:
         self.enemy_bullets.update()
         self.draw_bullets()
         self.tie_fighters.update()
+        self.explosions.update()
+        self.explosions.draw(self.screen)
         p.display.flip()
         self.screen.fill(color=s.SCREEN_COLOR)
 
@@ -121,15 +126,18 @@ class EmpireInvaders:
             for bullet in self.bullets:
                 if tie_fighter.rect.collidepoint(bullet.rect.x, bullet.rect.y):
                     self.bullets.remove(bullet)
+                    x, y = tie_fighter.rect.center
                     self.tie_fighters.remove(tie_fighter)
+                    explosion = Explosion(x, y)
+                    self.explosions.add(explosion)
 
     def check_lose(self):
         for bullet in self.enemy_bullets:
             if self.spaceship.rect.collidepoint(bullet.rect.x, bullet.rect.y):
                 # resetting game properties
-                self.tie_fighters, self.bullets, self.enemy_bullets, self.stars = self.create_sprites()
+                self.tie_fighters, self.bullets, self.enemy_bullets, self.stars, self.explosions = self.create_sprites()
                 self.spaceship = XWing(self.screen)
-                p.time.wait(1000)
+                p.time.wait(500)
                 p.mouse.set_visible(True)
                 lose_screen = LoseMenu(self)
                 lose_screen.main_loop()
@@ -137,9 +145,9 @@ class EmpireInvaders:
     def check_win(self):
         if len(self.tie_fighters) == 0:
             # resetting game properties
-            self.tie_fighters, self.bullets, self.enemy_bullets, self.stars = self.create_sprites()
+            self.tie_fighters, self.bullets, self.enemy_bullets, self.stars, self.explosions = self.create_sprites()
             self.spaceship = XWing(self.screen)
-            p.time.wait(1000)
+            p.time.wait(500)
             p.mouse.set_visible(True)
             win_screen = WinMenu(self)
             win_screen.main_loop()
