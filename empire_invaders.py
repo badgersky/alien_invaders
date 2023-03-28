@@ -2,7 +2,7 @@ import pygame as p
 import sys
 import settings as s
 from bullet import XWingBullet, TieFighterBullet
-from menu import Menu
+from menu import MainMenu, LoseMenu, WinMenu
 from spaceship import XWing, TieFighter
 from star import Star
 
@@ -18,25 +18,31 @@ class EmpireInvaders:
         p.display.set_caption('Empire Invaders')
 
         self.spaceship = XWing(self.screen)
-        self.tie_fighters = p.sprite.Group()
 
-        self.stars = p.sprite.Group()
+        self.tie_fighters, self.bullets, self.enemy_bullets, self.stars = self.create_sprites()
 
-        self.bullets = p.sprite.Group()
-        self.enemy_bullets = p.sprite.Group()
+        self.running = False
 
-        self.menu = Menu(self)
+        self.menu = MainMenu(self)
         self.menu.main_loop()
+
+    @ staticmethod
+    def create_sprites():
+        tie_fighters = p.sprite.Group()
+        bullets = p.sprite.Group()
+        enemy_bullets = p.sprite.Group()
+        stars = p.sprite.Group()
+        return tie_fighters, bullets, enemy_bullets, stars
 
     def main_loop(self):
         p.mouse.set_visible(False)
         self.create_stars()
         self.create_tie_fighters()
-        while True:
+        while self.running:
             self.check_win()
+            self.check_lose()
             self.check_events()
             self.check_hit_tie_fighters()
-            self.check_hit_x_wing()
             self.stars.update()
             self.update_screen()
 
@@ -114,14 +120,26 @@ class EmpireInvaders:
                     self.bullets.remove(bullet)
                     self.tie_fighters.remove(tie_fighter)
 
-    def check_hit_x_wing(self):
+    def check_lose(self):
         for bullet in self.enemy_bullets:
             if self.spaceship.rect.collidepoint(bullet.rect.x, bullet.rect.y):
-                sys.exit()
+                self.running = False
+                p.mouse.set_visible(True)
+                # resetting game properties
+                self.tie_fighters, self.bullets, self.enemy_bullets, self.stars = self.create_sprites()
+                self.spaceship = XWing(self.screen)
+                lose_screen = LoseMenu(self)
+                lose_screen.main_loop()
 
     def check_win(self):
         if len(self.tie_fighters) == 0:
-            sys.exit()
+            self.running = False
+            p.mouse.set_visible(True)
+            # resetting game properties
+            self.tie_fighters, self.bullets, self.enemy_bullets, self.stars = self.create_sprites()
+            self.spaceship = XWing(self.screen)
+            win_screen = WinMenu(self)
+            win_screen.main_loop()
 
 
 if __name__ == '__main__':

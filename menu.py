@@ -7,7 +7,7 @@ from text import Text
 
 class Menu:
 
-    def __init__(self, game):
+    def __init__(self, title_img, game):
         self.game = game
         self.screen = game.screen
         self.width = self.screen.get_width()
@@ -17,7 +17,6 @@ class Menu:
 
         play_button_img = p.image.load('images/play_button.bmp')
         quit_button_img = p.image.load('images/quit_button.bmp')
-        title_img = p.image.load('images/title.bmp')
 
         self.title = Text(self.screen, title_img, self.width // 2, self.height // 4)
         self.quit_button = Text(self.screen, quit_button_img, self.width // 2, self.height // 1.3)
@@ -43,12 +42,34 @@ class Menu:
                 if self.quit_button.rect.collidepoint(mouse_pos):
                     sys.exit()
                 if self.play_button.rect.collidepoint(mouse_pos):
+                    self.game.running = True
                     self.game.main_loop()
 
     def create_stars(self):
         for _ in range(1000):
             star = Star(self.screen)
             self.stars.add(star)
+
+
+class MainMenu(Menu):
+
+    def __init__(self, game):
+        self.title_img = p.image.load('images/title.bmp')
+        super().__init__(self.title_img, game)
+
+
+class LoseMenu(Menu):
+
+    def __init__(self, game):
+        self.lose_img = p.image.load('images/lose_title.bmp')
+        super().__init__(self.lose_img, game)
+
+
+class WinMenu(Menu):
+
+    def __init__(self, game):
+        self.win_img = p.image.load('images/win_title.bmp')
+        super().__init__(self.win_img, game)
 
 
 if __name__ == '__main__':
