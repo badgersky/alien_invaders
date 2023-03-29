@@ -129,7 +129,7 @@ class EmpireInvaders:
     def draw_score(self):
         color = (250, 253, 15)
         img = self.font.render(f'Score: {self.score}', True, color)
-        self.screen.blit(img, (0, self.screen_height - 40))
+        self.screen.blit(img, (10, self.screen_height - 40))
 
     def create_tie_fighters(self):
         prototype = TieFighter(self.screen, 0, 0)
