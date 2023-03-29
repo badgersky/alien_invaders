@@ -27,6 +27,9 @@ class EmpireInvaders:
         self.laser_sound.set_volume(0.4)
         self.explosion_sound.set_volume(0.4)
 
+        self.score = 0
+        self.font = p.font.Font('fonts/slkscr.ttf', 30)
+
         self.pause_menu = PauseMenu(self)
 
         self.menu = MainMenu(self)
@@ -85,6 +88,7 @@ class EmpireInvaders:
             self.spaceship.moving_right = True
 
     def update_screen(self):
+        self.draw_score()
         self.spaceship.update()
         self.bullets.update()
         self.enemy_bullets.update()
@@ -122,6 +126,11 @@ class EmpireInvaders:
             else:
                 bullet.draw()
 
+    def draw_score(self):
+        color = (250, 253, 15)
+        img = self.font.render(f'Score: {self.score}', True, color)
+        self.screen.blit(img, (0, self.screen_height - 40))
+
     def create_tie_fighters(self):
         prototype = TieFighter(self.screen, 0, 0)
         for y in range(40, self.screen_height // 2, int(prototype.rect.height * 1.5)):
@@ -133,6 +142,7 @@ class EmpireInvaders:
         for tie_fighter in self.tie_fighters:
             for bullet in self.bullets:
                 if tie_fighter.rect.collidepoint(bullet.rect.x, bullet.rect.y):
+                    self.score += 10
                     self.explosion_sound.play()
                     self.bullets.remove(bullet)
                     x, y = tie_fighter.rect.center
@@ -147,6 +157,7 @@ class EmpireInvaders:
                 # resetting game properties
                 self.tie_fighters, self.bullets, self.enemy_bullets, self.stars, self.explosions = self.create_sprites()
                 self.spaceship = XWing(self.screen)
+                self.score = 0
                 p.time.wait(500)
                 p.mouse.set_visible(True)
                 lose_screen = LoseMenu(self)
