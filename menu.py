@@ -57,6 +57,12 @@ class MainMenu(Menu):
         self.title_img = p.image.load('images/title.bmp')
         super().__init__(self.title_img, game)
 
+    def main_loop(self):
+        p.mixer.music.load('sounds/main_theme.mp3')
+        p.mixer.music.set_volume(0.1)
+        p.mixer.music.play(-1)
+        super().main_loop()
+
 
 class LoseMenu(Menu):
 
@@ -64,12 +70,23 @@ class LoseMenu(Menu):
         self.lose_img = p.image.load('images/lose_title.bmp')
         super().__init__(self.lose_img, game)
 
+    def main_loop(self):
+        p.mixer.music.load('sounds/lose_theme.mp3')
+        p.mixer.music.set_volume(0.1)
+        p.mixer.music.play(-1)
+        super().main_loop()
+
 
 class WinMenu(Menu):
 
     def __init__(self, game):
         self.win_img = p.image.load('images/win_title.bmp')
         super().__init__(self.win_img, game)
+
+    def main_loop(self):
+        p.mixer.music.load('sounds/win_theme.mp3')
+        p.mixer.music.play()
+        super().main_loop()
 
 
 class PauseMenu(Menu):

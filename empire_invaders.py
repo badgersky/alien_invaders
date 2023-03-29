@@ -6,7 +6,6 @@ from menu import MainMenu, LoseMenu, WinMenu, PauseMenu
 from spaceship import XWing, TieFighter
 from star import Star
 from explosion import Explosion
-import time
 
 
 class EmpireInvaders:
@@ -23,6 +22,11 @@ class EmpireInvaders:
 
         self.tie_fighters, self.bullets, self.enemy_bullets, self.stars, self.explosions = self.create_sprites()
 
+        self.laser_sound = p.mixer.Sound('sounds/laser.wav')
+        self.explosion_sound = p.mixer.Sound('sounds/boom.wav')
+        self.laser_sound.set_volume(0.4)
+        self.explosion_sound.set_volume(0.4)
+
         self.pause_menu = PauseMenu(self)
 
         self.menu = MainMenu(self)
@@ -38,6 +42,9 @@ class EmpireInvaders:
         return tie_fighters, bullets, enemy_bullets, stars, explosions
 
     def main_loop(self):
+        p.mixer.music.load('sounds/main_theme.mp3')
+        p.mixer.music.set_volume(0.1)
+        p.mixer.music.play(-1)
         p.mouse.set_visible(False)
         if len(self.tie_fighters) == 0:
             self.create_tie_fighters()
@@ -95,6 +102,7 @@ class EmpireInvaders:
 
     def create_bullets(self):
         if len(self.bullets) < 5:
+            self.laser_sound.play()
             new_bullet = XWingBullet(self.screen, self.spaceship)
             self.bullets.add(new_bullet)
         if len(self.enemy_bullets) <= 15:
@@ -125,6 +133,7 @@ class EmpireInvaders:
         for tie_fighter in self.tie_fighters:
             for bullet in self.bullets:
                 if tie_fighter.rect.collidepoint(bullet.rect.x, bullet.rect.y):
+                    self.explosion_sound.play()
                     self.bullets.remove(bullet)
                     x, y = tie_fighter.rect.center
                     self.tie_fighters.remove(tie_fighter)
@@ -134,6 +143,7 @@ class EmpireInvaders:
     def check_lose(self):
         for bullet in self.enemy_bullets:
             if self.spaceship.rect.collidepoint(bullet.rect.x, bullet.rect.y):
+                self.explosion_sound.play()
                 # resetting game properties
                 self.tie_fighters, self.bullets, self.enemy_bullets, self.stars, self.explosions = self.create_sprites()
                 self.spaceship = XWing(self.screen)
