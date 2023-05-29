@@ -20,7 +20,10 @@ class EmpireInvaders:
         s.SCREEN_SIZE['width'], s.SCREEN_SIZE['height'] = self.screen_width, self.screen_height
         p.display.set_caption('Empire Invaders')
 
-        self.spaceship = XWing(self.screen)
+        self.x_wing_img = 'images/x-wing.bmp'
+        self.tie_fight_img = 'images/tie_fighter.bmp'
+
+        self.spaceship = XWing(self.screen, self.x_wing_img)
 
         self.tie_fighters, self.bullets, self.enemy_bullets, self.stars, self.explosions = self.create_sprites()
 
@@ -141,10 +144,10 @@ class EmpireInvaders:
         self.screen.blit(img, (10, self.screen_height - 40))
 
     def create_tie_fighters(self):
-        prototype = TieFighter(self.screen, 0, 0)
+        prototype = TieFighter(self.screen, 0, 0, self.tie_fight_img)
         for y in range(40, self.screen_height // 2, int(prototype.rect.height * 1.5)):
             for x in range(60, self.screen_width - 60, int(prototype.rect.width * 2.1)):
-                tie_fighter = TieFighter(self.screen, x, y)
+                tie_fighter = TieFighter(self.screen, x, y, self.tie_fight_img)
                 self.tie_fighters.add(tie_fighter)
 
     def check_hit_tie_fighters(self):
@@ -165,7 +168,7 @@ class EmpireInvaders:
                 self.explosion_sound.play()
                 # resetting game properties
                 self.tie_fighters, self.bullets, self.enemy_bullets, self.stars, self.explosions = self.create_sprites()
-                self.spaceship = XWing(self.screen)
+                self.spaceship = XWing(self.screen, self.x_wing_img)
                 self.score = 0
                 p.time.wait(500)
                 p.mouse.set_visible(True)
@@ -176,7 +179,7 @@ class EmpireInvaders:
         if len(self.tie_fighters) == 0:
             # resetting game properties
             self.tie_fighters, self.bullets, self.enemy_bullets, self.stars, self.explosions = self.create_sprites()
-            self.spaceship = XWing(self.screen)
+            self.spaceship = XWing(self.screen, self.x_wing_img)
             p.time.wait(500)
             p.mouse.set_visible(True)
             win_screen = WinMenu(self)

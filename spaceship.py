@@ -4,26 +4,25 @@ import settings as s
 
 class Spaceship(pygame.sprite.Sprite):
 
-    def __init__(self, screen):
+    def __init__(self, screen, filename):
         super().__init__()
         self.screen = screen
         self.screen_rect = self.screen.get_rect()
 
+        self.image = pygame.image.load(filename)
+        self.rect = self.image.get_rect()
+
         self.moving_right = False
         self.moving_left = False
 
-    @staticmethod
-    def load_image_of_spaceship(filename):
-        image = pygame.image.load(filename)
-        return image
+    def update(self):
+        self.screen.blit(self.image, self.rect)
 
 
 class XWing(Spaceship):
 
-    def __init__(self, screen):
-        super().__init__(screen)
-        self.image = self.load_image_of_spaceship('images/x-wing.bmp')
-        self.rect = self.image.get_rect()
+    def __init__(self, screen, filename):
+        super().__init__(screen, filename)
         self.speed = s.X_WING_SPEED
         self.rect.midbottom = self.screen_rect.midbottom
         self.spaceship_x_float = float(self.rect.x)
@@ -38,15 +37,13 @@ class XWing(Spaceship):
 
     def update(self):
         self.move()
-        self.screen.blit(self.image, self.rect)
+        super().update()
 
 
 class TieFighter(Spaceship):
 
-    def __init__(self, screen, x, y):
-        super().__init__(screen)
-        self.image = self.load_image_of_spaceship('images/tie_fighter.bmp')
-        self.rect = self.image.get_rect()
+    def __init__(self, screen, x, y, filename):
+        super().__init__(screen, filename)
 
         self.rect.x = x
         self.rect.y = y
@@ -77,7 +74,7 @@ class TieFighter(Spaceship):
 
     def update(self):
         self.move()
-        self.screen.blit(self.image, self.rect)
+        super().update()
 
 
 if __name__ == '__main__':
