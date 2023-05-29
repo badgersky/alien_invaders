@@ -1,5 +1,7 @@
+import random
 import pygame as p
 import sys
+
 import settings as s
 from bullet import XWingBullet, TieFighterBullet
 from menu import MainMenu, LoseMenu, WinMenu, PauseMenu
@@ -54,6 +56,7 @@ class EmpireInvaders:
         if len(self.stars) == 0:
             self.create_stars()
         while True:
+            self.create_enemy_bullets()
             self.check_win()
             self.check_lose()
             self.check_events()
@@ -105,14 +108,20 @@ class EmpireInvaders:
             self.stars.add(star)
 
     def create_bullets(self):
-        if len(self.bullets) < 5:
+        if len(self.bullets) < 3:
             self.laser_sound.play()
             new_bullet = XWingBullet(self.screen, self.spaceship)
             self.bullets.add(new_bullet)
-        if len(self.enemy_bullets) <= 15:
-            for _ in range(3):
-                enemy_bullet = TieFighterBullet(self.screen)
-                self.enemy_bullets.add(enemy_bullet)
+
+    def create_enemy_bullets(self):
+        limit = 5
+        if len(self.enemy_bullets) < 5:
+            self.laser_sound.set_volume(0.02)
+            self.laser_sound.play()
+            self.laser_sound.set_volume(0.4)
+            for _ in range(limit):
+                new_bullet = TieFighterBullet(self.screen, random.choice(list(self.tie_fighters)))
+                self.enemy_bullets.add(new_bullet)
 
     def draw_bullets(self):
         for bullet in self.bullets:
