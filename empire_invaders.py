@@ -194,7 +194,7 @@ class EmpireInvaders:
                 win_screen.main_loop()
             else:
                 self.level += 1
-            self.main_loop()
+                self.main_loop()
 
 
 if __name__ == '__main__':
