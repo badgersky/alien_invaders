@@ -24,7 +24,8 @@ class EmpireInvaders:
         self.tie_fight_img = 'images/tie_fighter.bmp'
 
         self.spaceship = XWing(self.screen, self.x_wing_img)
-        self.tie_fighters, self.bullets, self.enemy_bullets, self.stars, self.explosions = self.create_sprites()
+        self.tie_fighters, self.bullets, self.enemy_bullets, self.explosions = self.create_sprites()
+        self.stars = p.sprite.Group()
 
         self.laser_sound = p.mixer.Sound('sounds/laser.wav')
         self.explosion_sound = p.mixer.Sound('sounds/boom.wav')
@@ -45,9 +46,8 @@ class EmpireInvaders:
         tie_fighters = p.sprite.Group()
         bullets = p.sprite.Group()
         enemy_bullets = p.sprite.Group()
-        stars = p.sprite.Group()
         explosions = p.sprite.Group()
-        return tie_fighters, bullets, enemy_bullets, stars, explosions
+        return tie_fighters, bullets, enemy_bullets, explosions
 
     def main_loop(self):
         p.mixer.music.load('sounds/main_theme.mp3')
@@ -173,7 +173,7 @@ class EmpireInvaders:
             if self.spaceship.rect.collidepoint(bullet.rect.x, bullet.rect.y):
                 self.explosion_sound.play()
                 # resetting game properties
-                self.tie_fighters, self.bullets, self.enemy_bullets, self.stars, self.explosions = self.create_sprites()
+                self.tie_fighters, self.bullets, self.enemy_bullets, self.explosions = self.create_sprites()
                 self.spaceship = XWing(self.screen, self.x_wing_img)
                 self.score = 0
                 p.time.wait(500)
@@ -183,17 +183,17 @@ class EmpireInvaders:
 
     def check_win(self):
         if len(self.tie_fighters) == 0:
+            # resetting game properties
+            self.tie_fighters, self.bullets, self.enemy_bullets, self.explosions = self.create_sprites()
             if self.level == 5:
+                self.spaceship = XWing(self.screen, self.x_wing_img)
                 p.time.wait(500)
                 p.mouse.set_visible(True)
                 win_screen = WinMenu(self)
                 win_screen.main_loop()
             else:
-                # resetting game properties
-                self.tie_fighters, self.bullets, self.enemy_bullets, self.stars, self.explosions = self.create_sprites()
-                self.spaceship = XWing(self.screen, self.x_wing_img)
                 self.level += 1
-                self.main_loop()
+            self.main_loop()
 
 
 if __name__ == '__main__':

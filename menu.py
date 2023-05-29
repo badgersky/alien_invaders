@@ -74,6 +74,7 @@ class LoseMenu(Menu):
         p.mixer.music.load('sounds/lose_theme.mp3')
         p.mixer.music.set_volume(0.1)
         p.mixer.music.play(-1)
+        self.game.level = 1
         super().main_loop()
 
 
@@ -86,6 +87,7 @@ class WinMenu(Menu):
     def main_loop(self):
         p.mixer.music.load('sounds/win_theme.mp3')
         p.mixer.music.play()
+        self.game.level = 1
         super().main_loop()
 
 
