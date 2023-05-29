@@ -1,5 +1,7 @@
+import random
 import pygame as p
 import sys
+
 import settings as s
 from bullet import XWingBullet, TieFighterBullet
 from menu import MainMenu, LoseMenu, WinMenu, PauseMenu
@@ -18,15 +20,19 @@ class EmpireInvaders:
         s.SCREEN_SIZE['width'], s.SCREEN_SIZE['height'] = self.screen_width, self.screen_height
         p.display.set_caption('Empire Invaders')
 
-        self.spaceship = XWing(self.screen)
+        self.x_wing_img = 'images/x-wing.bmp'
+        self.tie_fight_img = 'images/tie_fighter.bmp'
 
-        self.tie_fighters, self.bullets, self.enemy_bullets, self.stars, self.explosions = self.create_sprites()
+        self.spaceship = XWing(self.screen, self.x_wing_img)
+        self.tie_fighters, self.bullets, self.enemy_bullets, self.explosions = self.create_sprites()
+        self.stars = p.sprite.Group()
 
         self.laser_sound = p.mixer.Sound('sounds/laser.wav')
         self.explosion_sound = p.mixer.Sound('sounds/boom.wav')
         self.laser_sound.set_volume(0.4)
         self.explosion_sound.set_volume(0.4)
 
+        self.level = 1
         self.score = 0
         self.font = p.font.Font('fonts/slkscr.ttf', 30)
 
@@ -40,9 +46,8 @@ class EmpireInvaders:
         tie_fighters = p.sprite.Group()
         bullets = p.sprite.Group()
         enemy_bullets = p.sprite.Group()
-        stars = p.sprite.Group()
         explosions = p.sprite.Group()
-        return tie_fighters, bullets, enemy_bullets, stars, explosions
+        return tie_fighters, bullets, enemy_bullets, explosions
 
     def main_loop(self):
         p.mixer.music.load('sounds/main_theme.mp3')
@@ -54,6 +59,7 @@ class EmpireInvaders:
         if len(self.stars) == 0:
             self.create_stars()
         while True:
+            self.create_enemy_bullets()
             self.check_win()
             self.check_lose()
             self.check_events()
@@ -89,6 +95,7 @@ class EmpireInvaders:
 
     def update_screen(self):
         self.draw_score()
+        self.draw_level()
         self.spaceship.update()
         self.bullets.update()
         self.enemy_bullets.update()
@@ -105,14 +112,21 @@ class EmpireInvaders:
             self.stars.add(star)
 
     def create_bullets(self):
-        if len(self.bullets) < 5:
+        if len(self.bullets) < 3:
             self.laser_sound.play()
             new_bullet = XWingBullet(self.screen, self.spaceship)
             self.bullets.add(new_bullet)
-        if len(self.enemy_bullets) <= 15:
-            for _ in range(3):
-                enemy_bullet = TieFighterBullet(self.screen)
-                self.enemy_bullets.add(enemy_bullet)
+
+    def create_enemy_bullets(self):
+        if self.tie_fighters:
+            limit = 5 * self.level
+            if len(self.enemy_bullets) < 5:
+                self.laser_sound.set_volume(0.02)
+                self.laser_sound.play()
+                self.laser_sound.set_volume(0.4)
+                for _ in range(limit):
+                    new_bullet = TieFighterBullet(self.screen, random.choice(list(self.tie_fighters)))
+                    self.enemy_bullets.add(new_bullet)
 
     def draw_bullets(self):
         for bullet in self.bullets:
@@ -131,11 +145,16 @@ class EmpireInvaders:
         img = self.font.render(f'Score: {self.score}', True, color)
         self.screen.blit(img, (10, self.screen_height - 40))
 
+    def draw_level(self):
+        color = (250, 253, 15)
+        img = self.font.render(f'level: {self.level}', True, color)
+        self.screen.blit(img, (self.screen_width - 170, self.screen_height - 40))
+
     def create_tie_fighters(self):
-        prototype = TieFighter(self.screen, 0, 0)
+        prototype = TieFighter(self.screen, 0, 0, self.tie_fight_img)
         for y in range(40, self.screen_height // 2, int(prototype.rect.height * 1.5)):
             for x in range(60, self.screen_width - 60, int(prototype.rect.width * 2.1)):
-                tie_fighter = TieFighter(self.screen, x, y)
+                tie_fighter = TieFighter(self.screen, x, y, self.tie_fight_img)
                 self.tie_fighters.add(tie_fighter)
 
     def check_hit_tie_fighters(self):
@@ -155,8 +174,8 @@ class EmpireInvaders:
             if self.spaceship.rect.collidepoint(bullet.rect.x, bullet.rect.y):
                 self.explosion_sound.play()
                 # resetting game properties
-                self.tie_fighters, self.bullets, self.enemy_bullets, self.stars, self.explosions = self.create_sprites()
-                self.spaceship = XWing(self.screen)
+                self.tie_fighters, self.bullets, self.enemy_bullets, self.explosions = self.create_sprites()
+                self.spaceship = XWing(self.screen, self.x_wing_img)
                 self.score = 0
                 p.time.wait(500)
                 p.mouse.set_visible(True)
@@ -166,12 +185,16 @@ class EmpireInvaders:
     def check_win(self):
         if len(self.tie_fighters) == 0:
             # resetting game properties
-            self.tie_fighters, self.bullets, self.enemy_bullets, self.stars, self.explosions = self.create_sprites()
-            self.spaceship = XWing(self.screen)
-            p.time.wait(500)
-            p.mouse.set_visible(True)
-            win_screen = WinMenu(self)
-            win_screen.main_loop()
+            self.tie_fighters, self.bullets, self.enemy_bullets, self.explosions = self.create_sprites()
+            if self.level == 5:
+                self.spaceship = XWing(self.screen, self.x_wing_img)
+                p.time.wait(500)
+                p.mouse.set_visible(True)
+                win_screen = WinMenu(self)
+                win_screen.main_loop()
+            else:
+                self.level += 1
+                self.main_loop()
 
 
 if __name__ == '__main__':
