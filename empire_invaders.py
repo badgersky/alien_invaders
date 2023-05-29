@@ -24,7 +24,6 @@ class EmpireInvaders:
         self.tie_fight_img = 'images/tie_fighter.bmp'
 
         self.spaceship = XWing(self.screen, self.x_wing_img)
-
         self.tie_fighters, self.bullets, self.enemy_bullets, self.stars, self.explosions = self.create_sprites()
 
         self.laser_sound = p.mixer.Sound('sounds/laser.wav')
@@ -32,6 +31,7 @@ class EmpireInvaders:
         self.laser_sound.set_volume(0.4)
         self.explosion_sound.set_volume(0.4)
 
+        self.level = 1
         self.score = 0
         self.font = p.font.Font('fonts/slkscr.ttf', 30)
 
@@ -95,6 +95,7 @@ class EmpireInvaders:
 
     def update_screen(self):
         self.draw_score()
+        self.draw_level()
         self.spaceship.update()
         self.bullets.update()
         self.enemy_bullets.update()
@@ -117,7 +118,7 @@ class EmpireInvaders:
             self.bullets.add(new_bullet)
 
     def create_enemy_bullets(self):
-        limit = 5
+        limit = 5 * self.level
         if len(self.enemy_bullets) < 5:
             self.laser_sound.set_volume(0.02)
             self.laser_sound.play()
@@ -142,6 +143,11 @@ class EmpireInvaders:
         color = (250, 253, 15)
         img = self.font.render(f'Score: {self.score}', True, color)
         self.screen.blit(img, (10, self.screen_height - 40))
+
+    def draw_level(self):
+        color = (250, 253, 15)
+        img = self.font.render(f'level: {self.level}', True, color)
+        self.screen.blit(img, (self.screen_width - 170, self.screen_height - 40))
 
     def create_tie_fighters(self):
         prototype = TieFighter(self.screen, 0, 0, self.tie_fight_img)
@@ -177,13 +183,17 @@ class EmpireInvaders:
 
     def check_win(self):
         if len(self.tie_fighters) == 0:
-            # resetting game properties
-            self.tie_fighters, self.bullets, self.enemy_bullets, self.stars, self.explosions = self.create_sprites()
-            self.spaceship = XWing(self.screen, self.x_wing_img)
-            p.time.wait(500)
-            p.mouse.set_visible(True)
-            win_screen = WinMenu(self)
-            win_screen.main_loop()
+            if self.level == 5:
+                p.time.wait(500)
+                p.mouse.set_visible(True)
+                win_screen = WinMenu(self)
+                win_screen.main_loop()
+            else:
+                # resetting game properties
+                self.tie_fighters, self.bullets, self.enemy_bullets, self.stars, self.explosions = self.create_sprites()
+                self.spaceship = XWing(self.screen, self.x_wing_img)
+                self.level += 1
+                self.main_loop()
 
 
 if __name__ == '__main__':
