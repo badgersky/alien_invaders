@@ -120,13 +120,14 @@ class EmpireInvaders:
     def create_enemy_bullets(self):
         if self.tie_fighters:
             limit = 5 * self.level
-            if len(self.enemy_bullets) < 5:
-                self.laser_sound.set_volume(0.02)
+            if len(self.tie_fighters) < limit:
+                limit = len(self.tie_fighters)
+            if len(self.enemy_bullets) < limit:
+                self.laser_sound.set_volume(0.00000000001)
                 self.laser_sound.play()
                 self.laser_sound.set_volume(0.4)
-                for _ in range(limit):
-                    new_bullet = TieFighterBullet(self.screen, random.choice(list(self.tie_fighters)))
-                    self.enemy_bullets.add(new_bullet)
+                new_bullet = TieFighterBullet(self.screen, random.choice(list(self.tie_fighters)))
+                self.enemy_bullets.add(new_bullet)
 
     def draw_bullets(self):
         for bullet in self.bullets:
